@@ -7,6 +7,7 @@ mod arbol;
 mod diagrama;
 mod afn;
 mod thompson;
+mod graphviz;
 
 use std::fs;
 
@@ -65,12 +66,31 @@ fn main() {
                         match thompson::construir_afn(&arbol) {
                             Ok(afn) => {
                                 afn.mostrar();
+
+                                println!("\nGenerando grafo del AFN...");
+
+                                let nombre = format!(
+                                    "afn_{}",
+                                    indice + 1
+                                );
+
+                                match graphviz::generar_grafo(
+                                    &afn,
+                                    &nombre
+                                ) {
+                                    Ok(()) => {}
+
+                                    Err(error) => {
+                                        println!(
+                                            "Error al generar el grafo:"
+                                        );
+                                        println!("{}", error);
+                                    }
+                                }
                             }
 
                             Err(error) => {
-                                println!(
-                                    "Error al construir el AFN:"
-                                );
+                                println!("Error al construir el AFN:");
                                 println!("{}", error);
                             }
                         }
