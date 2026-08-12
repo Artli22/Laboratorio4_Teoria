@@ -5,6 +5,8 @@ mod shunting_yard;
 mod nodo;
 mod arbol;
 mod diagrama;
+mod afn;
+mod thompson;
 
 use std::fs;
 
@@ -13,12 +15,12 @@ fn main() {
     println!(" Conversión Infix a Postfix - Shunting Yard ");
     println!("============================================");
 
-    let contenido = match fs::read_to_string("expresionesRegulares.txt") {
+    let contenido = match fs::read_to_string("casosBasicos.txt") {
         Ok(contenido) => contenido,
 
         Err(error) => {
             eprintln!(
-                "No fue posible abrir expresionesRegulares.txt: {}",
+                "No fue posible abrir casosBasicos.txt: {}",
                 error
             );
 
@@ -54,13 +56,30 @@ fn main() {
                 match arbol::construir_arbol(
                     &resultado.tokens_postfix
                 ) {
-                        Ok(arbol) => {
+                    Ok(arbol) => {
                         println!("\nÁrbol sintáctico:");
                         diagrama::mostrar_arbol(&arbol);
-                 }
+
+                        println!("\nAFN de Thompson:");
+
+                        match thompson::construir_afn(&arbol) {
+                            Ok(afn) => {
+                                afn.mostrar();
+                            }
+
+                            Err(error) => {
+                                println!(
+                                    "Error al construir el AFN:"
+                                );
+                                println!("{}", error);
+                            }
+                        }
+                    }
 
                     Err(error) => {
-                        println!("\nError al construir el árbol:");
+                        println!(
+                            "\nError al construir el árbol:"
+                        );
                         println!("{}", error);
                     }
                 }
