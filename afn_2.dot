@@ -4,14 +4,27 @@ digraph AFN {
     node [shape=circle];
 
     inicio [shape=point];
-    inicio -> q4;
+    inicio -> q12;
 
-    q5 [shape=doublecircle];
+    q13 [shape=doublecircle];
 
-    q0 -> q1 [label="a"];
-    q2 -> q3 [label="b"];
+    q0 -> q1 [label="ε"];
+    q2 -> q3 [label="a"];
     q4 -> q0 [label="ε"];
     q4 -> q2 [label="ε"];
     q1 -> q5 [label="ε"];
     q3 -> q5 [label="ε"];
+    q6 -> q7 [label="b"];
+    q8 -> q6 [label="ε"];
+    q8 -> q9 [label="ε"];
+    q7 -> q6 [label="ε"];
+    q7 -> q9 [label="ε"];
+    q10 -> q4 [label="ε"];
+    q10 -> q8 [label="ε"];
+    q5 -> q11 [label="ε"];
+    q9 -> q11 [label="ε"];
+    q12 -> q10 [label="ε"];
+    q12 -> q13 [label="ε"];
+    q11 -> q10 [label="ε"];
+    q11 -> q13 [label="ε"];
 }

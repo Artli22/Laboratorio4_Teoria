@@ -11,17 +11,21 @@ mod graphviz;
 
 use std::fs;
 
+fn normalizar_expresion(expresion: &str) -> String {
+    expresion.replace('∗', "*")
+}
+
 fn main() {
     println!("============================================");
     println!(" Conversión Infix a Postfix - Shunting Yard ");
     println!("============================================");
 
-    let contenido = match fs::read_to_string("casosBasicos.txt") {
+    let contenido = match fs::read_to_string("NuevasExpresionesRegulares.txt") {
         Ok(contenido) => contenido,
 
         Err(error) => {
             eprintln!(
-                "No fue posible abrir casosBasicos.txt: {}",
+                "No fue posible abrir NuevasExpresionesRegulares.txt: {}",
                 error
             );
 
@@ -30,7 +34,8 @@ fn main() {
     };
 
     for (indice, linea) in contenido.lines().enumerate() {
-        let expresion = linea.trim();
+        let expresion_original = linea.trim();
+        let expresion = normalizar_expresion(expresion_original);
 
         if expresion.is_empty() {
             continue;
@@ -40,7 +45,10 @@ fn main() {
         println!("Expresión número {}", indice + 1);
         println!("============================================");
 
-        match shunting_yard::convertir_a_postfix(expresion) {
+        println!("Expresión original: {}", expresion_original);
+        println!("Expresión procesada: {}", expresion);
+
+        match shunting_yard::convertir_a_postfix(&expresion) {
             Ok(resultado) => {
                 println!("\nResultado:");
 
@@ -84,13 +92,17 @@ fn main() {
                                         println!(
                                             "Error al generar el grafo:"
                                         );
+
                                         println!("{}", error);
                                     }
                                 }
                             }
 
                             Err(error) => {
-                                println!("Error al construir el AFN:");
+                                println!(
+                                    "Error al construir el AFN:"
+                                );
+
                                 println!("{}", error);
                             }
                         }
@@ -100,6 +112,7 @@ fn main() {
                         println!(
                             "\nError al construir el árbol:"
                         );
+
                         println!("{}", error);
                     }
                 }
